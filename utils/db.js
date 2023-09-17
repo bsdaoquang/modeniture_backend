@@ -1,18 +1,15 @@
-import { MongoClient } from "mongodb";
-// Connection URL
+/** @format */
+import mongoose from 'mongoose';
+
 const url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.hfistot.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(url);
 
-// Database Name
-const dbName = process.env.DB_NAME;
-let db = {};
-const connectToDB = async (app) => {
-  try {
-    await client.connect();
-    console.log("Connected successfully to DB");
-
-  } catch (error) {
-    console.log(`cannot connect to DB by ${error}`);
-  }
+const connectToDB = async () => {
+	try {
+		const connection = await mongoose.connect(url);
+		console.log(`Database is connected at ${connection.connection.host}`);
+	} catch (error) {
+		console.log(error);
+		process.exit(1);
+	}
 };
 export default connectToDB;
